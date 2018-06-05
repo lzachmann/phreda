@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // rrisk_exponential
 Rcpp::NumericVector rrisk_exponential(arma::mat z, arma::mat zCoef);
-RcppExport SEXP _reda_rrisk_exponential(SEXP zSEXP, SEXP zCoefSEXP) {
+RcppExport SEXP _phreda_rrisk_exponential(SEXP zSEXP, SEXP zCoefSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -20,7 +20,7 @@ END_RCPP
 }
 // rrisk_linear
 Rcpp::NumericVector rrisk_linear(arma::mat z, arma::mat zCoef);
-RcppExport SEXP _reda_rrisk_linear(SEXP zSEXP, SEXP zCoefSEXP) {
+RcppExport SEXP _phreda_rrisk_linear(SEXP zSEXP, SEXP zCoefSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -32,7 +32,7 @@ END_RCPP
 }
 // rrisk_excess
 Rcpp::NumericVector rrisk_excess(arma::mat z, arma::mat zCoef);
-RcppExport SEXP _reda_rrisk_excess(SEXP zSEXP, SEXP zCoefSEXP) {
+RcppExport SEXP _phreda_rrisk_excess(SEXP zSEXP, SEXP zCoefSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -44,13 +44,13 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_reda_rrisk_exponential", (DL_FUNC) &_reda_rrisk_exponential, 2},
-    {"_reda_rrisk_linear", (DL_FUNC) &_reda_rrisk_linear, 2},
-    {"_reda_rrisk_excess", (DL_FUNC) &_reda_rrisk_excess, 2},
+    {"_phreda_rrisk_exponential", (DL_FUNC) &_phreda_rrisk_exponential, 2},
+    {"_phreda_rrisk_linear", (DL_FUNC) &_phreda_rrisk_linear, 2},
+    {"_phreda_rrisk_excess", (DL_FUNC) &_phreda_rrisk_excess, 2},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_reda(DllInfo *dll) {
+RcppExport void R_init_phreda(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

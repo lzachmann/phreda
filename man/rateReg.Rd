@@ -149,7 +149,7 @@ The available options additional to those that can be passed from
 }
 }
 \examples{
-library(reda)
+library(phreda)
 
 ## constant rate function
 (constFit <- rateReg(Survr(ID, time, event) ~ group + x1, data = simuDat))

@@ -1,17 +1,19 @@
 ################################################################################
 ##
-##   R package reda by Wenjie Wang, Haoda Fu, and Jun Yan
-##   Copyright (C) 2015-2018
+##   phreda: Phenological event simulation, courtesy of Wenjie Wang's reda
+##   package.
+##   Copyright (C) 2018 Luke Zachmann.
 ##
-##   This file is part of the R package reda.
+##   This program incorporates a modified version of the R package reda.
+##   Copyright (C) 2015-2018 Wenjie Wang, Haoda Fu, and Jun Yan.
 ##
-##   The R package reda is free software: You can redistribute it and/or
-##   modify it under the terms of the GNU General Public License as published
+##   These R packages are free software: You can redistribute them and/or
+##   modify them under the terms of the GNU General Public License as published
 ##   by the Free Software Foundation, either version 3 of the License, or
 ##   any later version (at your option). See the GNU General Public License
 ##   at <http://www.gnu.org/licenses/> for details.
 ##
-##   The R package reda is distributed in the hope that it will be useful,
+##   These R packages are distributed in the hope that they will be useful,
 ##   but WITHOUT ANY WARRANTY without even the implied warranty of
 ##   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ##
@@ -153,7 +155,7 @@ NULL
 ##' \code{\link{mcfDiff}} for comparing two-sample MCFs.
 ##' \code{\link{plot-method}} for plotting MCF.
 ##' @examples
-##' library(reda)
+##' library(phreda)
 ##'
 ##' ### sample MCF
 ##' ## Example 1. valve-seat data

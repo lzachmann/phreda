@@ -179,7 +179,7 @@ observed covariate values to be recorded, we may write a simple wrapper
 function for \code{simEvent} similar to \code{simEventData}.
 }
 \examples{
-library(reda)
+library(phreda)
 set.seed(123)
 ### time-invariant covariates and coefficients
 ## one process

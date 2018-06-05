@@ -10,11 +10,11 @@
 mcf(object, ...)
 
 \S4method{mcf}{formula}(object, data, subset, na.action,
-    variance = c("LawlessNadeau", "Poisson", "bootstrap"), logConfInt = FALSE,
-    level = 0.95, control = list(), ...)
+  variance = c("LawlessNadeau", "Poisson", "bootstrap"), logConfInt = FALSE,
+  level = 0.95, control = list(), ...)
 
 \S4method{mcf}{rateReg}(object, newdata, groupName, groupLevels, level = 0.95,
-    na.action, control = list(), ...)
+  na.action, control = list(), ...)
 }
 \arguments{
 \item{object}{An object used to dispatch a method.}
@@ -177,7 +177,7 @@ interval for the given newdata based on Delta-method.
 }}
 
 \examples{
-library(reda)
+library(phreda)
 
 ### sample MCF
 ## Example 1. valve-seat data

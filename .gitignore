@@ -16,11 +16,15 @@ TODO.md
 # Example code in package build process
 *-Ex.R
 
-# RStudio files
+# RStudio files/directories
 *.Rproj
 .Rproj.user
+.rstudio/
 
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
 
+run-stan.sh
+.DS_Store
+kitematic/

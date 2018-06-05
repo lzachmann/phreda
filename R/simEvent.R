@@ -1,17 +1,19 @@
 ################################################################################
 ##
-##   R package reda by Wenjie Wang, Haoda Fu, and Jun Yan
-##   Copyright (C) 2015-2018
+##   phreda: Phenological event simulation, courtesy of Wenjie Wang's reda
+##   package.
+##   Copyright (C) 2018 Luke Zachmann.
 ##
-##   This file is part of the R package reda.
+##   This program incorporates a modified version of the R package reda.
+##   Copyright (C) 2015-2018 Wenjie Wang, Haoda Fu, and Jun Yan.
 ##
-##   The R package reda is free software: You can redistribute it and/or
-##   modify it under the terms of the GNU General Public License as published
+##   These R packages are free software: You can redistribute them and/or
+##   modify them under the terms of the GNU General Public License as published
 ##   by the Free Software Foundation, either version 3 of the License, or
 ##   any later version (at your option). See the GNU General Public License
 ##   at <http://www.gnu.org/licenses/> for details.
 ##
-##   The R package reda is distributed in the hope that it will be useful,
+##   These R packages are distributed in the hope that they will be useful,
 ##   but WITHOUT ANY WARRANTY without even the implied warranty of
 ##   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ##
@@ -200,7 +202,7 @@ NULL
 ##' 26(3), Wiley Online Library: 403--13.
 ##'
 ##' @examples
-##' library(reda)
+##' library(phreda)
 ##' set.seed(123)
 ##' ### time-invariant covariates and coefficients
 ##' ## one process
@@ -301,7 +303,7 @@ NULL
 ##'          arguments = list(relativeRisk = list(intercept = 1)))
 ##'
 ##' @importFrom Rcpp sourceCpp
-##' @useDynLib reda
+##' @useDynLib phreda
 ##'
 ##' @importFrom stats integrate optimize qexp rexp runif rgamma rpois uniroot
 ##' @importFrom splines2 bSpline
@@ -388,6 +390,7 @@ simEvent <- function(z = 0, zCoef = 1,
 
     ## get arguments
     z_args <- lapply(arguments[["z"]], eval)
+    # print(as.data.frame(z_args))  # browser()
     zCoef_args <- lapply(arguments[["zCoef"]], eval)
     rho_args <- lapply(arguments[["rho"]], eval)
     rho_args <- rho_args[! names(rho_args) %in% c("z", "zCoef")]
@@ -741,60 +744,64 @@ simEvent <- function(z = 0, zCoef = 1,
                        if (length(frailty_args) > 0) frailty_args else list()
                    }
 
-    ## return
-    methods::new("simEvent",
-                 .Data = xOut,
-                 call = Call,
-                 z = list(
+    simulation <-
+      methods::new("simEvent",
+                   .Data = xOut,
+                   call = Call,
+                   z = list(
                      z = zMat,
                      fun = zFun,
                      args = zArgs,
                      timevarying = ! zVecIdx
-                 ),
-                 zCoef = list(
+                   ),
+                   zCoef = list(
                      zCoef = zCoefMat,
                      fun = zCoefFun,
                      args = zArgs,
                      timevarying = ! zCoefVecIdx
-                 ),
-                 rho = list(
+                   ),
+                   rho = list(
                      rho = rhoMat,
                      fun = rhoFun,
                      args = rhoArgs,
                      timevarying = ! rhoVecIdx
-                 ),
-                 rhoCoef = rhoCoef,
-                 frailty = list(
+                   ),
+                   rhoCoef = rhoCoef,
+                   frailty = list(
                      frailty = frailtyEffect,
                      fun = frailtyFun,
                      args = frailtyArgs
-                 ),
-                 origin = list(
+                   ),
+                   origin = list(
                      origin = origin,
                      fun = originFun,
                      args = origin_args
-                 ),
-                 endTime = list(
+                   ),
+                   endTime = list(
                      endTime = endTime,
                      fun = endTimeFun,
                      args = endTime_args
-                 ),
-                 censoring = list(
+                   ),
+                   censoring = list(
                      z = zMat_cen,
                      zCoef = zCoefMat_cen,
                      rho = rhoMat_cen
-                 ),
-                 recurrent = recurrent,
-                 interarrival = list(
+                   ),
+                   recurrent = recurrent,
+                   interarrival = list(
                      fun = interarrival,
                      args = interarrival_args
-                 ),
-                 relativeRisk = list(
+                   ),
+                   relativeRisk = list(
                      fun = relativeRisk,
                      args = rrisk_args
-                 ),
-                 method = method
-                 )
+                   ),
+                   method = method
+      )
+
+    ## return
+    list(simulation=simulation,
+         simulatingParams=as.data.frame(z_args))
 
 }
 
@@ -881,17 +888,17 @@ simEventData <- function(nProcess = 1,
                  }
     ## generate simulated data for each process
     resList <- lapply(seq_len(nProcess), function(i) {
-        simEvent2data(ID = i,
-                      simEvent(z = z_i(i),
-                               origin = origin_i(i),
-                               endTime = endTime_i(i),
-                               frailty = frailty_i(i),
-                               ...)
-                      )
+        simEventObj <- simEvent(z = z_i(i),
+                                origin = origin_i(i),
+                                endTime = endTime_i(i),
+                                frailty = frailty_i(i),
+                                ...)
+        list(simulation = simEvent2data(ID = i, simEventObj$simulation),
+             simulatingParams = simEventObj$simulatingParams)
     })
 
     ## prepare for output
-    out <- do.call(rbind, resList)
+    out <- do.call(rbind, lapply(resList, function(x) x$simulation))
     if (! attr(out, "recurrent")) {
         uniIdx <- ! duplicated(out$ID)
         out <- out[uniIdx, ]
@@ -901,7 +908,9 @@ simEventData <- function(nProcess = 1,
     ## reset row names
     row.names(out) <- NULL
     ## return
-    out
+    list(simulation = out,
+         simulatingParams = do.call(rbind, lapply(resList, function(x)
+           x$simulatingParams)))
 }
 
 
