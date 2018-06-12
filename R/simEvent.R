@@ -390,7 +390,6 @@ simEvent <- function(z = 0, zCoef = 1,
 
     ## get arguments
     z_args <- lapply(arguments[["z"]], eval)
-    # print(as.data.frame(z_args))  # browser()
     zCoef_args <- lapply(arguments[["zCoef"]], eval)
     rho_args <- lapply(arguments[["rho"]], eval)
     rho_args <- rho_args[! names(rho_args) %in% c("z", "zCoef")]
@@ -801,9 +800,9 @@ simEvent <- function(z = 0, zCoef = 1,
 
     ## return
     list(simulation=simulation,
-         simulatingParams=cbind(
-           as.data.frame(z_args),
-           as.data.frame(rho_args)))
+         simulatingParams=list(
+           z_args=as.data.frame(zArgs), 
+           rho_args=as.data.frame(rhoArgs)))
 
 }
 
@@ -909,10 +908,17 @@ simEventData <- function(nProcess = 1,
     attr(out, "call") <- Call
     ## reset row names
     row.names(out) <- NULL
+    
+    args_set <- c('z_args', 'rho_args')
+    simulating_params <- lapply(args_set, function(tmp_args) {
+      do.call(rbind, lapply(resList, function(x) {
+        x$simulatingParams[[tmp_args]]
+      })
+      )
+    })
+    names(simulating_params) <- args_set
     ## return
-    list(simulation = out,
-         simulatingParams = do.call(rbind, lapply(resList, function(x)
-           x$simulatingParams)))
+    list(simulation = out, simulatingParams = simulating_params)
 }
 
 

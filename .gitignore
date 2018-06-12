@@ -25,6 +25,6 @@ TODO.md
 vignettes/*.html
 vignettes/*.pdf
 
-run-stan.sh
+run-rstudio.sh
 .DS_Store
 kitematic/
