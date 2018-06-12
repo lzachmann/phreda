@@ -801,8 +801,8 @@ simEvent <- function(z = 0, zCoef = 1,
     ## return
     list(simulation=simulation,
          simulatingParams=list(
-           z_args=as.data.frame(zArgs), 
-           rho_args=as.data.frame(rhoArgs)))
+           z_args=as.data.frame(z_args), 
+           rho_args=as.data.frame(rho_args)))
 
 }
 
